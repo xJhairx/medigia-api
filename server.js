@@ -26,7 +26,7 @@ app.post("/preguntar", async (req, res) => {
           "X-Title": "MediGIA"
         },
         body: JSON.stringify({
-          model: "mistralai/mistral-7b-instruct:free",
+          model: "google/gemma-2-9b-it:free",
           messages: [
             {
               role: "system",
