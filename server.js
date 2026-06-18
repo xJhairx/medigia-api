@@ -7,7 +7,7 @@ app.use(cors());
 app.use(express.json());
 
 // PON AQUÍ TU NUEVA API KEY
-const API_KEY = "TU_API_KEY_OPENROUTER";
+const API_KEY = "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";
 
 app.post("/preguntar", async (req, res) => {
   try {
