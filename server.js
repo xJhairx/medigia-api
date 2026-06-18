@@ -6,8 +6,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// API KEY NUEVA DE OPENROUTER
-const API_KEY = "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";
+// PON AQUÍ TU NUEVA API KEY
+const API_KEY = "TU_API_KEY_OPENROUTER";
 
 app.post("/preguntar", async (req, res) => {
   try {
@@ -21,31 +21,30 @@ app.post("/preguntar", async (req, res) => {
         method: "POST",
         headers: {
           Authorization: `Bearer ${API_KEY}`,
-          "Content-Type": "application/json",
-          "HTTP-Referer": "https://medigia.netlify.app",
-          "X-Title": "MediGIA"
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "google/gemma-2-9b-it:free",
+          model: "openrouter/auto",
           messages: [
             {
               role: "system",
               content: `
 Eres MediGÍA Pro.
 
-Especialista en:
-- Autismo
-- TEA
+Tu especialidad es:
+- Autismo (TEA)
 - TDAH
 - Medicamentos
 - Instrucciones médicas
+- Accesibilidad
 
-Reglas:
-- Responde siempre en español
-- Respuestas cortas
+Responde:
+- En español
 - Fácil de entender
 - Máximo 4 líneas
-- Si no sabes algo, indica consultar al médico
+- Sin lenguaje complicado
+
+Si la pregunta no es médica, igualmente responde de forma amable.
 `
             },
             {
@@ -59,18 +58,19 @@ Reglas:
 
     const data = await response.json();
 
-    console.log(data);
+    console.log("RESPUESTA OPENROUTER:");
+    console.log(JSON.stringify(data, null, 2));
 
     if (!response.ok) {
       return res.json({
         respuesta:
-          data.error?.message ||
-          "Error al consultar la IA"
+          data?.error?.message ||
+          "Error al consultar la IA."
       });
     }
 
     const respuesta =
-      data.choices?.[0]?.message?.content ||
+      data?.choices?.[0]?.message?.content ||
       "No pude responder eso.";
 
     res.json({
@@ -86,14 +86,8 @@ Reglas:
   }
 });
 
-// Ruta para probar que Render funciona
-app.get("/", (req, res) => {
-  res.send("Servidor MediGIA funcionando");
-});
-
-// IMPORTANTE PARA RENDER
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`);
+  console.log(`Servidor MediGIA funcionando en puerto ${PORT}`);
 });
